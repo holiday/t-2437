@@ -1,170 +1,69 @@
 
-import React from 'react';
-import { trails } from '../data/trails';
-import { beaches } from '../data/beaches';
-import LanguageSwitcher from '../components/LanguageSwitcher';
-import { useLanguage } from '../context/LanguageContext';
-import FiltersDialog from '../components/FiltersDialog';
-import CategoryFilter from '../components/CategoryFilter';
-import DayHikesSection from '../components/DayHikesSection';
-import MultiDayHikesSection from '../components/MultiDayHikesSection';
-import CategorySection from '../components/CategorySection';
-import BeachesSection from '../components/BeachesSection';
-import { useTrailFilters } from '../hooks/useTrailFilters';
-import { useTrailLists } from '../hooks/useTrailLists';
-import { Helmet } from 'react-helmet';
-import { Separator } from '../components/ui/separator';
-import { useIsMobile } from '../hooks/use-mobile';
-
-// Trails to exclude from non-walking-path category views
-const excludedTrailNames = ['Playa Muñoz']; // Removed 'Cascada de los Duendes' from excluded names
-// Specific IDs to exclude (more reliable than name matching)
-const excludedTrailIds = ['12']; // 12=Playa Muñoz - Only exclude from non-walking-path categories
+import React, { useState, useMemo } from 'react';
+import { cars } from '../data/cars';
+import { CarCondition, CarType, FuelType } from '../types/car';
+import CarCard from '../components/CarCard';
+import CarFilters from '../components/CarFilters';
 
 const Index = () => {
-  const { t } = useLanguage();
-  const isMobile = useIsMobile();
-  
-  const {
-    filters,
-    filteredBeaches,
-    allHikes,
-    dayHikes,
-    multiDayHikes,
-  } = useTrailFilters(trails, beaches);
+  const [selectedCondition, setSelectedCondition] = useState<CarCondition | 'all'>('all');
+  const [selectedType, setSelectedType] = useState<CarType | 'all'>('all');
+  const [selectedFuelType, setSelectedFuelType] = useState<FuelType | 'all'>('all');
 
-  const {
-    directAccessHikes,
-    otherDayHikes,
-    pampLindaHikes,
-    otherMultiDayHikes,
-    categoryBarilochieHikes,
-    categoryPampLindaHikes
-  } = useTrailLists(allHikes, dayHikes, multiDayHikes);
-
-  // Get Villa Tacul beach for the walking-path category
-  const villaTaculBeach = beaches.find(beach => beach.name === "Villa Tacul");
-  const walkingPathBeaches = villaTaculBeach ? [villaTaculBeach] : [];
-
-  const shouldShowBeaches = filters.selectedCategory === 'all' || filters.selectedCategory === 'beaches-lakes';
-  const shouldShowDayHikes = filters.selectedCategory === 'all' && (filters.selectedType === 'all' || filters.selectedType === 'day-hike');
-  const shouldShowMultiDayHikes = filters.selectedCategory === 'all' && (filters.selectedType === 'all' || filters.selectedType === 'multi-day');
-  const shouldShowCategorySection = filters.selectedCategory !== 'all' && filters.selectedCategory !== 'beaches-lakes';
-
-  // For nearby category
-  const nearbyTrailsIds = ['1', '5', '6', '7', '11', '12']; // IDs for the specified trails
-  
-  // Special case for walking-path category - include Cascada de los Duendes (ID 7)
-  let categoryHikes;
-  
-  if (filters.selectedCategory === 'nearby') {
-    categoryHikes = allHikes.filter(trail => nearbyTrailsIds.includes(trail.id));
-  } else if (filters.selectedCategory === 'walking-path') {
-    categoryHikes = allHikes.filter(trail => trail.category === filters.selectedCategory);
-  } else {
-    categoryHikes = allHikes.filter(trail => 
-      trail.category === filters.selectedCategory &&
-      !excludedTrailIds.includes(trail.id)
-    );
-  }
-
-  // Filter category region hikes by the selected category
-  const categoryRegionHikes = {
-    bariloche: categoryBarilochieHikes.filter(trail => 
-      trail.category === filters.selectedCategory &&
-      (filters.selectedCategory === 'walking-path' || !excludedTrailIds.includes(trail.id))
-    ),
-    pampLinda: categoryPampLindaHikes.filter(trail => 
-      trail.category === filters.selectedCategory
-    )
-  };
-
-  // Debug logs to trace categorization
-  console.log(`Cerro Otto in easy-mountain: ${trails.find(t => t.name === "Cerro Otto & Piedra de Habsburgo")?.category === 'easy-mountain'}`);
-  console.log(`Cerro Campanario in easy-mountain: ${trails.find(t => t.name === "Cerro Campanario")?.category === 'easy-mountain'}`);
-  console.log(`Mirador Lago Gutiérrez in easy-mountain: ${trails.find(t => t.name === "Mirador Lago Gutiérrez")?.category === 'easy-mountain'}`);
-  console.log(`Cerro San Martin in easy-mountain: ${trails.find(t => t.name === "Cerro San Martín")?.category === 'easy-mountain'}`);
-  console.log(`Cerro Llao Llao in easy-mountain: ${trails.find(t => t.name === "Cerro Llao Llao")?.category === 'easy-mountain'}`);
-  console.log(`Category hikes count for ${filters.selectedCategory}: ${categoryHikes.length}`);
-  
-  // Add debug for walking-path specific trails
-  const cascadaTrail = trails.find(t => t.name === "Cascada de los Duendes");
-  const llaoLlaoTrail = trails.find(t => t.name === "Cerro Llao Llao");
-  console.log(`Cascada de los Duendes in walking-path: ${cascadaTrail?.category === 'walking-path'}`);
-  console.log(`Cascada ID: ${cascadaTrail?.id}`);
-  console.log(`Cerro Llao Llao in walking-path: ${llaoLlaoTrail?.category === 'walking-path'}`);
+  const filteredCars = useMemo(() => {
+    return cars.filter(car => {
+      if (selectedCondition !== 'all' && car.condition !== selectedCondition) return false;
+      if (selectedType !== 'all' && car.type !== selectedType) return false;
+      if (selectedFuelType !== 'all' && car.fuelType !== selectedFuelType) return false;
+      return true;
+    });
+  }, [selectedCondition, selectedType, selectedFuelType]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky to-white">
-      <Helmet>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" />
-      </Helmet>
-      <LanguageSwitcher />
+    <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
-        <header className={`text-center ${isMobile ? 'mb-4 pt-6' : 'mb-10 pt-12 sm:pt-0'} animate-fadeIn`}>
-          <div className={`flex justify-center ${isMobile ? 'mb-3 mt-5' : 'mb-6'}`}>
-            <img 
-              src="/lovable-uploads/b0b87b4b-57b0-4a6e-8314-b8c65cfded98.png"
-              alt="Camping Los Coihues"
-              className={`${isMobile ? 'h-12' : 'h-24'} w-auto`}
-            />
-          </div>
-          <h1 className={`text-4xl font-bold text-black ${isMobile ? 'mb-1' : 'mb-2'}`}>
-            {t('title')}
+        <header className="text-center mb-10">
+          <h1 className="text-5xl font-bold text-black mb-4">
+            Car<span className="text-orange">Hub</span>
           </h1>
-          <p className={`text-xl text-stone ${isMobile ? 'mb-2' : 'mb-4'}`}>
-            {t('tagline')}
+          <p className="text-xl text-gray-600">
+            Find Your Perfect Vehicle Today
           </p>
         </header>
 
-        <Separator className={`${isMobile ? 'my-2' : 'my-4'} bg-[#B8BCC2] h-[1px] w-full shadow-sm`} />
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-1">
+            <CarFilters
+              selectedCondition={selectedCondition}
+              setSelectedCondition={setSelectedCondition}
+              selectedType={selectedType}
+              setSelectedType={setSelectedType}
+              selectedFuelType={selectedFuelType}
+              setSelectedFuelType={setSelectedFuelType}
+            />
+          </div>
 
-        <CategoryFilter 
-          selectedCategory={filters.selectedCategory}
-          setSelectedCategory={filters.setSelectedCategory}
-          setFiltersOpen={filters.setFiltersOpen}
-        />
+          <div className="lg:col-span-3">
+            <div className="mb-6">
+              <h2 className="text-2xl font-semibold text-black">
+                {filteredCars.length} Vehicles Available
+              </h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {filteredCars.map((car) => (
+                <CarCard key={car.id} car={car} />
+              ))}
+            </div>
 
-        <Separator className={`${isMobile ? 'my-2' : 'my-4'} bg-[#B8BCC2] h-[1px] w-full shadow-sm`} />
-
-        <FiltersDialog 
-          open={filters.filtersOpen}
-          onOpenChange={filters.setFiltersOpen}
-          selectedType={filters.selectedType}
-          setSelectedType={filters.setSelectedType}
-          selectedDifficulty={filters.selectedDifficulty}
-          setSelectedDifficulty={filters.setSelectedDifficulty}
-          selectedTravelTime={filters.selectedTravelTime}
-          setSelectedTravelTime={filters.setSelectedTravelTime}
-        />
-
-        {shouldShowCategorySection && (
-          <CategorySection 
-            trails={categoryHikes}
-            sectionTitle={filters.selectedCategory === 'nearby' ? 
-              t('nearby') : 
-              t(`category${filters.selectedCategory.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('')}`)}
-            showSection={true}
-            beaches={filters.selectedCategory === 'walking-path' ? filteredBeaches : []}
-          />
-        )}
-
-        <DayHikesSection 
-          directAccessHikes={directAccessHikes}
-          otherDayHikes={otherDayHikes}
-          showSection={shouldShowDayHikes}
-        />
-
-        <MultiDayHikesSection 
-          otherMultiDayHikes={otherMultiDayHikes}
-          pampLindaHikes={pampLindaHikes}
-          showSection={shouldShowMultiDayHikes}
-        />
-
-        <BeachesSection 
-          beaches={filteredBeaches}
-          showSection={shouldShowBeaches}
-        />
+            {filteredCars.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-xl text-gray-500">No vehicles found matching your criteria</p>
+                <p className="text-gray-400 mt-2">Try adjusting your filters</p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
