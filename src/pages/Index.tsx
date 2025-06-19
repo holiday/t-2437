@@ -1,12 +1,20 @@
+
 import React, { useState, useMemo } from 'react';
 import { cars } from '../data/cars';
 import { CarCondition, CarType, FuelType } from '../types/car';
 import CarCard from '../components/CarCard';
 import HorizontalFilters from '../components/HorizontalFilters';
 import VendorCarousel from '../components/VendorCarousel';
+import Footer from '../components/Footer';
 import { Input } from '../components/ui/input';
-import { Search, User } from 'lucide-react';
+import { Search, User, MapPin, ChevronDown } from 'lucide-react';
 import { Button } from '../components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../components/ui/dropdown-menu';
 
 const Index = () => {
   const [selectedCondition, setSelectedCondition] = useState<CarCondition | 'all'>('all');
@@ -17,9 +25,10 @@ const Index = () => {
   const [yearRange, setYearRange] = useState<[number, number]>([2015, 2024]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [sortBy, setSortBy] = useState<string>('price-low');
 
-  const filteredCars = useMemo(() => {
-    return cars.filter(car => {
+  const filteredAndSortedCars = useMemo(() => {
+    let filtered = cars.filter(car => {
       if (selectedCondition !== 'all' && car.condition !== selectedCondition) return false;
       if (selectedType !== 'all' && car.type !== selectedType) return false;
       if (selectedFuelType !== 'all' && car.fuelType !== selectedFuelType) return false;
@@ -34,11 +43,42 @@ const Index = () => {
       }
       return true;
     });
-  }, [selectedCondition, selectedType, selectedFuelType, selectedMake, selectedModel, yearRange, priceRange, searchQuery]);
+
+    // Sort the filtered cars
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'price-low':
+          return a.price - b.price;
+        case 'price-high':
+          return b.price - a.price;
+        case 'year-new':
+          return b.year - a.year;
+        case 'year-old':
+          return a.year - b.year;
+        case 'mileage-low':
+          return a.mileage - b.mileage;
+        case 'mileage-high':
+          return b.mileage - a.mileage;
+        default:
+          return 0;
+      }
+    });
+
+    return filtered;
+  }, [selectedCondition, selectedType, selectedFuelType, selectedMake, selectedModel, yearRange, priceRange, searchQuery, sortBy]);
 
   // Split cars into sponsored and regular
-  const sponsoredCars = filteredCars.slice(0, 2);
-  const regularCars = filteredCars.slice(2);
+  const sponsoredCars = filteredAndSortedCars.slice(0, 3);
+  const regularCars = filteredAndSortedCars.slice(3);
+
+  const sortOptions = [
+    { value: 'price-low', label: 'Price: Low to High' },
+    { value: 'price-high', label: 'Price: High to Low' },
+    { value: 'year-new', label: 'Year: Newest First' },
+    { value: 'year-old', label: 'Year: Oldest First' },
+    { value: 'mileage-low', label: 'Mileage: Low to High' },
+    { value: 'mileage-high', label: 'Mileage: High to Low' },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -62,14 +102,14 @@ const Index = () => {
       {/* Search Bar */}
       <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
-          <div className="relative max-w-md">
+          <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
               type="text"
               placeholder="Search cars, makes, models..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 border-gray-300 focus:border-black focus:ring-black"
+              className="pl-10 border-gray-300 focus:border-black focus:ring-black w-full"
             />
           </div>
         </div>
@@ -94,10 +134,40 @@ const Index = () => {
       />
 
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-6">
+        {/* Results Header with Sort and Location */}
+        <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-semibold text-black">
-            {filteredCars.length} Vehicles Available
+            {filteredAndSortedCars.length} Vehicles Available
           </h2>
+          
+          <div className="flex items-center gap-4">
+            {/* User Location */}
+            <div className="flex items-center text-gray-600">
+              <MapPin className="w-4 h-4 mr-1" />
+              <span className="text-sm">Los Angeles, CA</span>
+            </div>
+
+            {/* Sort Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="flex items-center gap-2 border-gray-300">
+                  Sort by
+                  <ChevronDown className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {sortOptions.map((option) => (
+                  <DropdownMenuItem
+                    key={option.value}
+                    onClick={() => setSortBy(option.value)}
+                    className={sortBy === option.value ? 'bg-gray-100' : ''}
+                  >
+                    {option.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
         {/* Sponsored Listings */}
@@ -123,7 +193,7 @@ const Index = () => {
           </div>
         )}
 
-        {filteredCars.length === 0 && (
+        {filteredAndSortedCars.length === 0 && (
           <div className="text-center py-12">
             <p className="text-xl text-gray-500">No vehicles found matching your criteria</p>
             <p className="text-gray-400 mt-2">Try adjusting your filters or search terms</p>
@@ -149,6 +219,8 @@ const Index = () => {
           />
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
