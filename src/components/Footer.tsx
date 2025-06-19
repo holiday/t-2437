@@ -1,8 +1,22 @@
-
 import React from 'react';
 import { Facebook, Twitter, Instagram, Youtube, Phone, Mail, MapPin } from 'lucide-react';
 
 const Footer = () => {
+  // Dummy partner logos - repeated for continuous scroll effect
+  const partnerLogos = [
+    { name: "Toyota", logo: "/lovable-uploads/b0b87b4b-57b0-4a6e-8314-b8c65cfded98.png" },
+    { name: "Honda", logo: "/lovable-uploads/8f08a419-86bc-49e3-8707-015d86806c3e.png" },
+    { name: "BMW", logo: "/lovable-uploads/b0b87b4b-57b0-4a6e-8314-b8c65cfded98.png" },
+    { name: "Ford", logo: "/lovable-uploads/8f08a419-86bc-49e3-8707-015d86806c3e.png" },
+    { name: "Audi", logo: "/lovable-uploads/b0b87b4b-57b0-4a6e-8314-b8c65cfded98.png" },
+    { name: "Mercedes", logo: "/lovable-uploads/8f08a419-86bc-49e3-8707-015d86806c3e.png" },
+    { name: "Nissan", logo: "/lovable-uploads/b0b87b4b-57b0-4a6e-8314-b8c65cfded98.png" },
+    { name: "Hyundai", logo: "/lovable-uploads/8f08a419-86bc-49e3-8707-015d86806c3e.png" },
+  ];
+
+  // Double the array for seamless infinite scroll
+  const duplicatedLogos = [...partnerLogos, ...partnerLogos];
+
   return (
     <footer className="bg-black text-white mt-20">
       <div className="container mx-auto px-4 py-12">
@@ -67,15 +81,20 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Associated Vendors */}
+        {/* Moving Trusted Partners Section */}
         <div className="border-t border-gray-800 mt-12 pt-8">
           <h4 className="text-lg font-semibold mb-6 text-center">Our Trusted Partners</h4>
-          <div className="flex justify-center items-center space-x-8 flex-wrap gap-4">
-            <img src="/lovable-uploads/b0b87b4b-57b0-4a6e-8314-b8c65cfded98.png" alt="Toyota" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
-            <img src="/lovable-uploads/8f08a419-86bc-49e3-8707-015d86806c3e.png" alt="Honda" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
-            <img src="/lovable-uploads/b0b87b4b-57b0-4a6e-8314-b8c65cfded98.png" alt="BMW" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
-            <img src="/lovable-uploads/8f08a419-86bc-49e3-8707-015d86806c3e.png" alt="Ford" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
-            <img src="/lovable-uploads/b0b87b4b-57b0-4a6e-8314-b8c65cfded98.png" alt="Audi" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
+          <div className="overflow-hidden">
+            <div className="flex animate-scroll space-x-8">
+              {duplicatedLogos.map((partner, index) => (
+                <img 
+                  key={index}
+                  src={partner.logo} 
+                  alt={partner.name} 
+                  className="h-8 opacity-60 hover:opacity-100 transition-opacity flex-shrink-0" 
+                />
+              ))}
+            </div>
           </div>
         </div>
 
@@ -84,6 +103,20 @@ const Footer = () => {
           <p>&copy; 2024 CarHub. All rights reserved.</p>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        .animate-scroll {
+          animation: scroll 30s linear infinite;
+        }
+      `}</style>
     </footer>
   );
 };

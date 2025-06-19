@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Car } from '../types/car';
 import { Card, CardContent } from './ui/card';
@@ -6,6 +5,7 @@ import { MapPin, Phone, MessageCircle, Star } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { useNavigate } from 'react-router-dom';
+import ImageCarousel from './ImageCarousel';
 
 interface CarCardProps {
   car: Car;
@@ -31,11 +31,11 @@ const CarCard: React.FC<CarCardProps> = ({ car, isSponsored = false }) => {
       }`}
       onClick={handleCardClick}
     >
-      <div className="relative">
-        <img
-          src={car.imageUrl}
+      <div className="relative h-48">
+        <ImageCarousel 
+          images={car.images.length > 0 ? car.images : [car.imageUrl]}
           alt={`${car.year} ${car.make} ${car.model}`}
-          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+          className="h-48"
         />
         <div className="absolute top-4 left-4 flex gap-2">
           <Badge variant={car.condition === 'new' ? 'default' : 'secondary'} className="bg-orange text-white">

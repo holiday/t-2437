@@ -5,6 +5,9 @@ import { cars } from '../data/cars';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { ArrowLeft, MapPin, MessageCircle, Phone, Fuel, Gauge, Calendar, Palette } from 'lucide-react';
+import ImageCarousel from '../components/ImageCarousel';
+import RecentlyViewedCarousel from '../components/RecentlyViewedCarousel';
+import SimilarVehiclesCarousel from '../components/SimilarVehiclesCarousel';
 
 const CarDetail = () => {
   const { id } = useParams();
@@ -45,10 +48,10 @@ const CarDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="space-y-4">
               <div className="relative">
-                <img
-                  src={car.imageUrl}
+                <ImageCarousel 
+                  images={car.images.length > 0 ? car.images : [car.imageUrl]}
                   alt={`${car.year} ${car.make} ${car.model}`}
-                  className="w-full h-96 object-cover rounded-lg"
+                  className="h-96 rounded-lg"
                 />
                 <div className="absolute top-4 left-4">
                   <Badge variant="default" className="bg-orange text-white">
@@ -56,19 +59,6 @@ const CarDetail = () => {
                   </Badge>
                 </div>
               </div>
-              
-              {car.images.length > 1 && (
-                <div className="grid grid-cols-3 gap-2">
-                  {car.images.slice(1).map((image, index) => (
-                    <img
-                      key={index}
-                      src={image}
-                      alt={`${car.make} ${car.model} view ${index + 2}`}
-                      className="w-full h-24 object-cover rounded"
-                    />
-                  ))}
-                </div>
-              )}
             </div>
 
             <div className="p-6 space-y-6">
@@ -168,9 +158,28 @@ const CarDetail = () => {
                 <div>
                   <span className="font-medium">Condition:</span> {car.condition}
                 </div>
+                <div>
+                  <span className="font-medium">VIN:</span> {car.vin}
+                </div>
+                <div>
+                  <span className="font-medium">Steering:</span> {car.steeringPosition}
+                </div>
+                <div>
+                  <span className="font-medium">Transmission:</span> {car.transmission}
+                </div>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Recently Viewed Section */}
+        <div className="mt-12">
+          <RecentlyViewedCarousel />
+        </div>
+
+        {/* Similar Vehicles Section */}
+        <div className="mt-8">
+          <SimilarVehiclesCarousel currentCar={car} />
         </div>
       </div>
     </div>

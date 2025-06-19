@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { cars } from '../data/cars';
 import { CarCondition, CarType, FuelType } from '../types/car';
@@ -6,6 +5,8 @@ import CarCard from '../components/CarCard';
 import HorizontalFilters from '../components/HorizontalFilters';
 import VendorCarousel from '../components/VendorCarousel';
 import Footer from '../components/Footer';
+import FloatingChatIcon from '../components/FloatingChatIcon';
+import AdBanner from '../components/AdBanner';
 import { Input } from '../components/ui/input';
 import { Search, User, MapPin, ChevronDown } from 'lucide-react';
 import { Button } from '../components/ui/button';
@@ -44,7 +45,6 @@ const Index = () => {
       return true;
     });
 
-    // Sort the filtered cars
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'price-low':
@@ -67,7 +67,6 @@ const Index = () => {
     return filtered;
   }, [selectedCondition, selectedType, selectedFuelType, selectedMake, selectedModel, yearRange, priceRange, searchQuery, sortBy]);
 
-  // Split cars into sponsored and regular
   const sponsoredCars = filteredAndSortedCars.slice(0, 3);
   const regularCars = filteredAndSortedCars.slice(3);
 
@@ -132,6 +131,15 @@ const Index = () => {
         priceRange={priceRange}
         setPriceRange={setPriceRange}
       />
+
+      {/* First Advertisement Banner */}
+      <div className="container mx-auto px-4 py-6">
+        <AdBanner 
+          title="Find Your Dream Car Today!"
+          subtitle="Browse thousands of verified vehicles from trusted dealers"
+          className="h-32"
+        />
+      </div>
 
       <div className="container mx-auto px-4 py-8">
         {/* Results Header with Sort and Location */}
@@ -218,9 +226,20 @@ const Index = () => {
             cars={cars.filter(car => car.dealerName === "BMW Manhattan")}
           />
         </div>
+
+        {/* Second Advertisement Banner */}
+        <div className="mt-16 mb-8">
+          <AdBanner 
+            title="Get Pre-Approved for Financing"
+            subtitle="Quick and easy car loans with competitive rates"
+            bgColor="bg-gradient-to-r from-blue-500 to-blue-700"
+            className="h-32"
+          />
+        </div>
       </div>
 
       <Footer />
+      <FloatingChatIcon />
     </div>
   );
 };

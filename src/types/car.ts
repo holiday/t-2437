@@ -24,4 +24,6 @@ export interface Car {
   transmission: 'manual' | 'automatic';
   engine: string;
   color: string;
+  vin: string;
+  steeringPosition: 'RHD' | 'LHD';
 }
