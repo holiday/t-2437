@@ -2,16 +2,17 @@
 import React from 'react';
 import { Car } from '../types/car';
 import { Card, CardContent } from './ui/card';
-import { MapPin, Phone, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, MessageCircle, Star } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { useNavigate } from 'react-router-dom';
 
 interface CarCardProps {
   car: Car;
+  isSponsored?: boolean;
 }
 
-const CarCard: React.FC<CarCardProps> = ({ car }) => {
+const CarCard: React.FC<CarCardProps> = ({ car, isSponsored = false }) => {
   const navigate = useNavigate();
 
   const handleWhatsAppClick = (e: React.MouseEvent) => {
@@ -25,7 +26,9 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
 
   return (
     <Card 
-      className="group hover:shadow-xl transition-all duration-300 cursor-pointer bg-white border border-gray-200 overflow-hidden"
+      className={`group hover:shadow-xl transition-all duration-300 cursor-pointer bg-white border overflow-hidden ${
+        isSponsored ? 'border-orange-200 ring-1 ring-orange-100' : 'border-gray-200'
+      }`}
       onClick={handleCardClick}
     >
       <div className="relative">
@@ -34,10 +37,16 @@ const CarCard: React.FC<CarCardProps> = ({ car }) => {
           alt={`${car.year} ${car.make} ${car.model}`}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-4 left-4 flex gap-2">
           <Badge variant={car.condition === 'new' ? 'default' : 'secondary'} className="bg-orange text-white">
             {car.condition.toUpperCase()}
           </Badge>
+          {isSponsored && (
+            <Badge variant="outline" className="bg-white/90 text-orange border-orange text-xs">
+              <Star className="w-3 h-3 mr-1 fill-current" />
+              Sponsored
+            </Badge>
+          )}
         </div>
         <div className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-md">
           <img 

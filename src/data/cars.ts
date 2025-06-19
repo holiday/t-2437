@@ -16,10 +16,10 @@ export const cars: Car[] = [
     dealerName: 'Toyota Downtown',
     dealerLogo: '/lovable-uploads/b0b87b4b-57b0-4a6e-8314-b8c65cfded98.png',
     whatsappNumber: '+1234567890',
-    imageUrl: '/lovable-uploads/3b45435b-d0d0-4fb7-ac3b-73c18e21fd50.png',
+    imageUrl: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop',
     images: [
-      '/lovable-uploads/3b45435b-d0d0-4fb7-ac3b-73c18e21fd50.png',
-      '/lovable-uploads/1f998a53-3c5b-429f-8ea5-709a0af96d94.png'
+      'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop'
     ],
     description: 'Brand new Toyota Camry with all the latest features and safety technology.',
     features: ['Backup Camera', 'Bluetooth', 'Cruise Control', 'Apple CarPlay'],
@@ -41,9 +41,9 @@ export const cars: Car[] = [
     dealerName: 'Honda Center',
     dealerLogo: '/lovable-uploads/8f08a419-86bc-49e3-8707-015d86806c3e.png',
     whatsappNumber: '+1234567891',
-    imageUrl: '/lovable-uploads/18aa5c8f-d10c-4295-a1d7-665ad54ba5c5.png',
+    imageUrl: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&h=600&fit=crop',
     images: [
-      '/lovable-uploads/18aa5c8f-d10c-4295-a1d7-665ad54ba5c5.png'
+      'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&h=600&fit=crop'
     ],
     description: 'Well-maintained Honda Civic with low mileage and excellent fuel economy.',
     features: ['Navigation System', 'Sunroof', 'Heated Seats', 'Lane Assist'],
@@ -65,9 +65,9 @@ export const cars: Car[] = [
     dealerName: 'BMW Manhattan',
     dealerLogo: '/lovable-uploads/b0b87b4b-57b0-4a6e-8314-b8c65cfded98.png',
     whatsappNumber: '+1234567892',
-    imageUrl: '/lovable-uploads/3dda568d-50dc-4f15-af17-7744f417603c.png',
+    imageUrl: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=600&fit=crop',
     images: [
-      '/lovable-uploads/3dda568d-50dc-4f15-af17-7744f417603c.png'
+      'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=600&fit=crop'
     ],
     description: 'Luxury SUV with hybrid technology and premium features.',
     features: ['Panoramic Roof', 'Premium Audio', 'Adaptive Suspension', 'Wireless Charging'],
@@ -89,9 +89,9 @@ export const cars: Car[] = [
     dealerName: 'Tesla Bay Area',
     dealerLogo: '/lovable-uploads/8f08a419-86bc-49e3-8707-015d86806c3e.png',
     whatsappNumber: '+1234567893',
-    imageUrl: '/lovable-uploads/1f998a53-3c5b-429f-8ea5-709a0af96d94.png',
+    imageUrl: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&h=600&fit=crop',
     images: [
-      '/lovable-uploads/1f998a53-3c5b-429f-8ea5-709a0af96d94.png'
+      'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&h=600&fit=crop'
     ],
     description: 'Electric vehicle with autopilot and supercharging capability.',
     features: ['Autopilot', 'Supercharging', 'Glass Roof', 'Premium Interior'],
@@ -113,9 +113,9 @@ export const cars: Car[] = [
     dealerName: 'Ford Texas',
     dealerLogo: '/lovable-uploads/b0b87b4b-57b0-4a6e-8314-b8c65cfded98.png',
     whatsappNumber: '+1234567894',
-    imageUrl: '/lovable-uploads/18aa5c8f-d10c-4295-a1d7-665ad54ba5c5.png',
+    imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop',
     images: [
-      '/lovable-uploads/18aa5c8f-d10c-4295-a1d7-665ad54ba5c5.png'
+      'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop'
     ],
     description: 'America\'s best-selling truck with powerful performance and capability.',
     features: ['Towing Package', '4WD', 'Bed Liner', 'Crew Cab'],
@@ -137,9 +137,9 @@ export const cars: Car[] = [
     dealerName: 'Audi Chicago',
     dealerLogo: '/lovable-uploads/8f08a419-86bc-49e3-8707-015d86806c3e.png',
     whatsappNumber: '+1234567895',
-    imageUrl: '/lovable-uploads/3b45435b-d0d0-4fb7-ac3b-73c18e21fd50.png',
+    imageUrl: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&h=600&fit=crop',
     images: [
-      '/lovable-uploads/3b45435b-d0d0-4fb7-ac3b-73c18e21fd50.png'
+      'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&h=600&fit=crop'
     ],
     description: 'Luxury SUV with three rows of seating and advanced technology.',
     features: ['3rd Row Seating', 'Virtual Cockpit', 'Quattro AWD', 'Bang & Olufsen Audio'],
