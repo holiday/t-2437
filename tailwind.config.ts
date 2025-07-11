@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -27,30 +28,36 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        forest: {
-          DEFAULT: "#2D5A27",
-          light: "#3B7A36",
-        },
-        stone: {
-          DEFAULT: "#6B7280",
-          light: "#9CA3AF",
-        },
-        sky: {
-          DEFAULT: "#E0F2FE",
-          dark: "#BAE6FD",
+        orange: {
+          DEFAULT: "#FF6B35",
+          light: "#FF8C69",
+          dark: "#E55A2B",
+          50: "#FFF4F0",
+          100: "#FFE4D9",
+          500: "#FF6B35",
+          600: "#E55A2B",
+          700: "#CC4A1F",
         },
         black: "#000000",
-        purple: {
-          600: "#9b87f5",
-          800: "#7E69AB",
+        white: "#FFFFFF",
+        gray: {
+          100: "#F7F7F7",
+          200: "#E5E5E5",
+          300: "#D4D4D4",
+          400: "#A3A3A3",
+          500: "#737373",
+          600: "#525252",
+          700: "#404040",
+          800: "#262626",
+          900: "#171717",
         },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#FF6B35",
+          foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "#F7F7F7",
+          foreground: "#171717",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
